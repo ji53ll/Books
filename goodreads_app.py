@@ -24,7 +24,6 @@ st.set_page_config(
 #### Color theming
 
 color_scale_for_bars = 'Blues'
-color_scale_for_histogram = 'Blues'
 color_scale_for_wordcloud = 'Blues'
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -180,11 +179,9 @@ fig_year_published.update_layout(yaxis_title='')
 
 books_rated = books_df[books_df['My Rating']!= 0]
 fig_my_rating = px.histogram(books_rated, 
-                             x='My Rating',
-                             color_continuous_scale=color_scale_for_histogram)
+                             x='My Rating')
 fig_avg_rating = px.histogram(books_rated,
-                             x='Average Rating',
-                             color_continuous_scale=color_scale_for_histogram)
+                             x='Average Rating')
 fig_my_rating.update_layout(yaxis_title='')
 fig_avg_rating.update_layout(yaxis_title='')
 
