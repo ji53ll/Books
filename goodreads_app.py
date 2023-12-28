@@ -23,10 +23,10 @@ st.set_page_config(
 
 #### Color theming
 
-color_scale_for_bars = 'BuGn'
-color_scale_for_wordcloud = 'BuGn'
+color_scale_for_bars = 'Blues'
+color_scale_for_wordcloud = 'Blues'
 # Define your color for the histogram
-histogram_color = '#FF5733' 
+histogram_color = '#94D7F2' 
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
