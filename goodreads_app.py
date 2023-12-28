@@ -92,7 +92,7 @@ books_finished_filtered = books_df[(books_df['Exclusive Shelf'] == 'read') & (bo
 u_books = len(books_finished_filtered['Author'].unique())
 u_authors = len(books_finished_filtered['Author'].unique())
 mode_author = books_finished_filtered['Author'].mode()[0]
-st.write(f'#### It appears you have finished {u_books} books iwth a total of {u_authors} unique authors. Your most read author is {mode_author}.')
+st.write(f'#### It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
 st.write(f'#### Your app results can be found below.')
 row1_col1, row1_col2 = st.columns(2)
 
