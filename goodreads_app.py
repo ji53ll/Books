@@ -75,7 +75,6 @@ books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
 books_per_year.columns = ['Year Finished', 'Count']
 
-
 # Convert 'Year Finished' to category to ensure only whole years are displayed
 books_per_year['Year Finished'] = books_per_year['Year Finished'].astype('category')
 
