@@ -67,16 +67,19 @@ st.subheader('Web app by [Jisell Howe](https://www.jisellhowe.com)')
 This app analyzes (but does not store) the books you've read using Goodreads. Upload your data to see your own insights.
 """
 
-# Assuming half the screen width for the file uploader
-_, file_col = st.columns(2)
+# Assuming half the screen width for each column
+left_col, right_col = st.columns(2)
 
-goodreads_file = file_col.file_uploader('## Please Import Your Goodreads Data')
+# File uploader in the second half
+goodreads_file = right_col.file_uploader('## Please Import Your Goodreads Data')
+
+# The rest of the code
 if goodreads_file is None:
     books_df = pd.read_csv('goodreads_library_export_JH.csv')
-    st.write("### Analyzing Jisell's Goodreads History")
+    left_col.write("### Analyzing Jisell's Goodreads History")
 else:
     books_df = pd.read_csv(goodreads_file)
-    st.write('### Analyzing your Goodreads History')
+    left_col.write('### Analyzing your Goodreads History')
 
 #### pre-processing on titles
     
@@ -134,8 +137,8 @@ books_finished_filtered = books_df[(books_df['Exclusive Shelf'] == 'read') & (bo
 u_books = len(books_finished_filtered['Author'].unique())
 u_authors = len(books_finished_filtered['Author'].unique())
 mode_author = books_finished_filtered['Author'].mode()[0]
-st.write(f'###### It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
-st.write(f'###### Your app results can be found below.')
+right_col.write(f'###### It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
+right_col.write(f'###### Your app results can be found below.')
 
 
 fig_days_finished = px.histogram(books_finished_filtered, 
