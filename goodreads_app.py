@@ -96,6 +96,8 @@ fig_year_finished = px.bar(books_per_year,
 
 # Explicitly set the x-axis type to 'category'; get rid of y label & legend
 fig_year_finished.update_layout(xaxis_type='category', yaxis_title='',showlegend=False)
+# Remove color bar legend
+fig_year_finished.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext=[]))
 
 
 
@@ -171,6 +173,8 @@ fig_year_published = px.bar(
                             )
 fig_year_published.update_xaxes(range=[1980,2024])
 fig_year_published.update_layout(yaxis_title='',showlegend=False)
+# Remove color bar legend
+fig_year_published.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext=[]))
 
 
 
