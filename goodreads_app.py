@@ -28,6 +28,23 @@ color_scale_for_wordcloud = 'Blues'
 # Define your color for the histogram
 histogram_color = '#94D7F2' 
 
+
+# Set the background color and height of the banner
+banner_style = """
+    <style>
+        .banner {
+            padding: 10px;
+            background-color: #94D7F2;  /* You can use any valid color representation */
+            color: white;
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+"""
+
+# Display the banner
+st.markdown(f'<div class="banner">Books In Review</div>', unsafe_allow_html=True)
+
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
