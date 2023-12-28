@@ -121,16 +121,16 @@ all_titles = aggregate_all_titles(books_df, 'Title')
 books_publication_year = books_df.groupby('Year Published')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
 
-# Adjust the 'Count' column based on the total number of titles for each year
-adjusted_counts = []
+# Create a new DataFrame for each title
+df_list = []
 for index, row in books_publication_year.iterrows():
     year = row['Year Published']
-    titles = all_titles[all_titles['Year Published'] == year]['All Titles'].iloc[0]
+    titles = all_titles[all_titles['Original Publication Year'] == year]['All Titles'].iloc[0]
     count = len(titles) if isinstance(titles, list) else 1
-    adjusted_counts.append(count)
+    df_list.append(pd.DataFrame({'Year Published': [year] * count, 'Title': titles}))
 
-# Replace the 'Count' column with the adjusted counts
-books_publication_year['Count'] = adjusted_counts
+# Concatenate the DataFrames
+result_df = pd.concat(df_list, ignore_index=True)
 
 # Reset index before merging
 books_publication_year = books_publication_year.reset_index(drop=True)
