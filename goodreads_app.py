@@ -77,7 +77,7 @@ books_df['cleaned_titles'] = books_df['Title'].apply(preprocess_title)
 text = ' '.join(books_df['cleaned_titles'])
 
 # Generate word cloud
-wordcloud = WordCloud(width=700, height=1000, background_color='white',colormap=color_scale_for_wordcloud).generate(text)
+wordcloud = WordCloud(width=700, height=1100, background_color='white',colormap=color_scale_for_wordcloud).generate(text)
 
 
 
@@ -226,7 +226,6 @@ with row3_col1:
      avg_my_rating = round(books_rated['My Rating'].mean(),2)
      st.write(f'##### You rate an average of {avg_my_rating} stars on Goodreads.')
      st.plotly_chart(fig_my_rating)
-     st.write("---")
 with row3_col2:
      st.write(f'##### You rate books {sign} than the average Goodreads user by {abs(avg_difference)}!')
      st.plotly_chart(fig_avg_rating)
