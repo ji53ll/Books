@@ -161,8 +161,12 @@ fig_year_published.update_layout(yaxis_title='')
 ####
 
 books_rated = books_df[books_df['My Rating']!= 0]
-fig_my_rating = px.histogram(books_rated, x='My Rating')
-fig_avg_rating = px.histogram(books_rated,x='Average Rating')
+fig_my_rating = px.histogram(books_rated, 
+                             x='My Rating',
+                             color='Count')
+fig_avg_rating = px.histogram(books_rated,
+                             x='Average Rating',
+                             color='Count')
 fig_my_rating.update_layout(yaxis_title='')
 fig_avg_rating.update_layout(yaxis_title='')
 
