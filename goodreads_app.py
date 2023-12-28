@@ -31,7 +31,7 @@ histogram_color = '#94D7F2'
 
 # Set the background color and height of the banner
 banner_style = """
-    background-color: #3498db;  /* You can use any valid color representation */
+    background-color: #94D7F2;  /* You can use any valid color representation */
     color: white;
     text-align: center;
     padding: 10px;
@@ -40,7 +40,7 @@ banner_style = """
 
 # Use HTML to create the banner
 st.write(
-    '<div style="{}"><h1>Your Banner Text Here</h1></div>'.format(banner_style),
+    '<div style="{}"><h1>Analyzing Your Goodreads Reading Habits</h1></div>'.format(banner_style),
     unsafe_allow_html=True,
 )
 
@@ -57,8 +57,6 @@ lottie_book = load_lottieurl(file_url)
 st_lottie(lottie_book, speed=1, height=200, key='initial')
 
 
-
-st.title('Analyzing Your Goodreads Reading Habits')
 st.subheader('Web app by [Jisell Howe](https://www.jisellhowe.com)')
 """
 This app analyzes (but does not store) the books you've read using Goodreads. Upload your data to see your own insights.
