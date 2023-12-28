@@ -77,7 +77,7 @@ books_df['cleaned_titles'] = books_df['Title'].apply(preprocess_title)
 text = ' '.join(books_df['cleaned_titles'])
 
 # Generate word cloud
-wordcloud = WordCloud(width=700, height=1065, background_color='white',colormap=color_scale_for_wordcloud).generate(text)
+wordcloud = WordCloud(width=700, height=1067, background_color='white',colormap=color_scale_for_wordcloud).generate(text)
 
 
 
@@ -114,13 +114,13 @@ st.write(f'###### Your app results can be found below.')
 
 fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
                                  labels={'days_to_finish':'days'})
-fig_days_finished.update_layout(yaxis_title='')
+fig_days_finished.update_layout(yaxis_title='',showlegend=False)
 
 
 #####
 
 fig_num_pages = px.histogram(books_df,x='Number of Pages')
-fig_num_pages.update_layout(yaxis_title='')
+fig_num_pages.update_layout(yaxis_title='',showlegend=False)
 
 
 def aggregate_all_titles(dataframe, title_col):
@@ -170,8 +170,8 @@ fig_year_published = px.bar(
                             hover_data=['All Titles']
                             )
 fig_year_published.update_xaxes(range=[1980,2024])
-fig_year_published.update_layout(yaxis_title='')
-fig_year_published.update_traces(showlegend=False)
+fig_year_published.update_layout(yaxis_title='',showlegend=False)
+
 
 
 
@@ -184,7 +184,7 @@ fig_my_rating = px.histogram(books_rated,
 fig_avg_rating = px.histogram(books_rated,
                              x='Average Rating')
 fig_my_rating.update_layout(yaxis_title='')
-fig_avg_rating.update_layout(yaxis_title='')
+fig_avg_rating.update_layout(yaxis_title='',showlegend=False)
 
 
 
