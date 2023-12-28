@@ -218,7 +218,7 @@ with row2_col1:
      st.write("---")
 with row2_col2:
      mean_days_to_finish = int(books_finished_filtered['days_to_finish'].mean())
-     st.write(f'##### It took you an average of {mean_days_to_finish} days between when the book was added to Goodreads and when you finished the book. This is not a perfect metric, as you may have added this book to a "want to read" list.')
+     st.write(f'###### It is currently taking you an average of {mean_days_to_finish} days between when the book was added to Goodreads and when you finish the book')
      st.plotly_chart(fig_days_finished)
      st.write("---")
 with row3_col1:
