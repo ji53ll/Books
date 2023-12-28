@@ -77,8 +77,10 @@ books_per_year.columns = ['Year Finished', 'Count']
 
 fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count')
 
-# Explicitly set the x-axis type to 'category'
-fig_year_finished.update_layout(xaxis_type='category')
+
+# Explicitly set the x-axis type to 'category' and get rid of y label
+fig_year_finished.update_layout(xaxis_type='category', yaxis_title='')
+
 
 #####
 
@@ -94,11 +96,11 @@ row1_col1, row1_col2 = st.columns(2)
 
 fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
                                  labels={'days_to_finish':'days'})
-
+fig_days_finished.update_layout(yaxis_title='')
 #####
 
-fig_num_pages = px.histogram(books_df,x='Number of Pages',
-                             title='Book Length Histogram')
+fig_num_pages = px.histogram(books_df,x='Number of Pages')
+fig_num_pages.update_layout(yaxis_title='')
 
 #####
 
@@ -106,14 +108,16 @@ books_publication_year = books_df.groupby('Original Publication Year')['Book Id'
 books_publication_year.columns = ['Year Published','Count']
 fig_year_published = px.bar(books_publication_year,x='Year Published',y='Count')
 fig_year_published.update_xaxes(range=[1980,2023])
+fig_year_published.update_layout(yaxis_title='')
 
 
 ####
 
 books_rated = books_df[books_df['My Rating']!= 0]
 fig_my_rating = px.histogram(books_rated, x='My Rating')
-fig_avg_rating = px.histogram(books_rated,x='Average Rating',
-                              title='Average Goodreads Rating')
+fig_avg_rating = px.histogram(books_rated,x='Average Rating')
+fig_my_rating.update_layout(yaxis_title='')
+fig_avg_rating.update_layout(yaxis_title='')
 
 avg_difference = np.round(np.mean(books_rated['My Rating'] - books_rated['Average Rating']),2)
 if avg_difference >= 0:
