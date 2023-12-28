@@ -132,9 +132,10 @@ books_publication_year = pd.merge(books_publication_year, all_titles, how='left'
 # Fill NaN values in string columns with an empty string
 books_publication_year = books_publication_year.apply(lambda col: col.fillna('') if col.dtypes == 'object' else col)
 
-# Drop rows with NaN values in the "Title" column
-books_publication_year = books_publication_year.dropna(subset=['Title'])
-
+# Check if 'Title' is in the columns before dropping NaN values
+if 'Title' in books_publication_year.columns:
+    # Drop rows with NaN values in the "Title" column
+    books_publication_year = books_publication_year.dropna(subset=['Title'])
 
 
 fig_year_published = px.bar(
