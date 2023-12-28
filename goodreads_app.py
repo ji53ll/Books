@@ -139,7 +139,7 @@ u_books = len(books_finished_filtered['Author'].unique())
 u_authors = len(books_finished_filtered['Author'].unique())
 mode_author = books_finished_filtered['Author'].mode()[0]
 right_col.write(f'###### It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
-right_col.write(f'###### Your app results can be found below.')
+left_col.write(f'###### Your app results can be found below.')
 
 
 fig_days_finished = px.histogram(books_finished_filtered, 
