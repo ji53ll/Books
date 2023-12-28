@@ -149,7 +149,7 @@ fig_year_published = px.bar(
                             books_publication_year,
                             x='Year Published',
                             y='Count',
-                            color='Exclusive Shelf',
+                            color='Count',
                             hover_data=['All Titles']
                             )
 fig_year_published.update_xaxes(range=[1980,2024])
