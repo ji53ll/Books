@@ -107,9 +107,9 @@ fig_num_pages = px.histogram(books_df,x='Number of Pages')
 fig_num_pages.update_layout(yaxis_title='')
 
 
-# Function to aggregate titles without grouping
 def aggregate_all_titles(dataframe, title_col):
-    return dataframe[title_col].agg(lambda x: ', '.join(x)).reset_index(name='All Titles')
+    return dataframe.groupby('Year Published')[title_col].agg(lambda x: ', '.join(x)).reset_index(name='All Titles')
+
 
 # Aggregate all titles
 all_titles = aggregate_all_titles(books_df, 'Title')
