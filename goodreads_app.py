@@ -111,14 +111,16 @@ fig_num_pages.update_layout(yaxis_title='')
 def aggregate_all_titles(dataframe, title_col):
     return dataframe[title_col].agg(lambda x: ', '.join(x)).reset_index(name='All Titles')
 
-
-# Repeat each title based on its count
+# Aggregate all titles
 all_titles = aggregate_all_titles(books_df, 'Title')
 
 #####
 
+
+
+
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
-books_publication_year.columns = ['Year Published','Count']
+books_publication_year.columns = ['Year Published','Count', 'Title']
 books_publication_year['Title'] = books_df['Title']
 fig_year_published = px.bar(
                             books_publication_year,
