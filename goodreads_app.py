@@ -13,10 +13,23 @@ import matplotlib.pyplot as plt
 import nltk
 nltk.download('stopwords')
 
+# Set the overall theme or style
+st.set_page_config(
+    page_title='Your Goodreads Analysis',
+    page_icon='📚',
+    layout='wide',
+    initial_sidebar_state='collapsed'
+)
 
+#### Color theming
 
-st.set_page_config(layout="wide")
+color_scale_for_bars = 'Blues'
+color_scale_for_histogram = 'Blues'
+color_scale_for_wordcloud = 'Blues'
+
 st.set_option('deprecation.showPyplotGlobalUse', False)
+
+
 def load_lottieurl(url:str):
     r = requests.get(url)
     if r.status_code != 200:
@@ -65,7 +78,7 @@ books_df['cleaned_titles'] = books_df['Title'].apply(preprocess_title)
 text = ' '.join(books_df['cleaned_titles'])
 
 # Generate word cloud
-wordcloud = WordCloud(width=700, height=1000, background_color='white').generate(text)
+wordcloud = WordCloud(width=700, height=1000, background_color='white',colormap=color_scale_for_wordcloud).generate(text)
 
 
 
@@ -78,7 +91,8 @@ books_per_year.columns = ['Year Finished', 'Count']
 fig_year_finished = px.bar(books_per_year, 
                            x='Year Finished', 
                            y='Count',
-                           color='Year Finished')
+                           color='Year Finished',
+                           color_continuous_scale=color_scale_for_bars)
 
 
 # Explicitly set the x-axis type to 'category' and get rid of y label
@@ -153,6 +167,7 @@ fig_year_published = px.bar(
                             x='Year Published',
                             y='Count',
                             color='Count',
+                            color_continuous_scale=color_scale_for_bars,
                             hover_data=['All Titles']
                             )
 fig_year_published.update_xaxes(range=[1980,2024])
@@ -165,9 +180,11 @@ fig_year_published.update_layout(yaxis_title='')
 
 books_rated = books_df[books_df['My Rating']!= 0]
 fig_my_rating = px.histogram(books_rated, 
-                             x='My Rating')
+                             x='My Rating',
+                             color_continuous_scale=color_scale_for_histogram)
 fig_avg_rating = px.histogram(books_rated,
-                             x='Average Rating')
+                             x='Average Rating',
+                             color_continuous_scale=color_scale_for_histogram)
 fig_my_rating.update_layout(yaxis_title='')
 fig_avg_rating.update_layout(yaxis_title='')
 
