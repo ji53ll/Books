@@ -125,7 +125,7 @@ books_publication_year.columns = ['Year Published','Count']
 df_list = []
 for index, row in books_publication_year.iterrows():
     year = row['Year Published']
-    titles = all_titles[all_titles['Original Publication Year'] == year]['All Titles'].iloc[0]
+    titles = all_titles[all_titles['Year Published'] == year]['All Titles'].iloc[0]
     count = len(titles) if isinstance(titles, list) else 1
     df_list.append(pd.DataFrame({'Year Published': [year] * count, 'Title': titles}))
 
