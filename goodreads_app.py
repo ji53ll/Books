@@ -188,9 +188,8 @@ with row1_col1:
      st.write(" ### Your Most Common Book Themes")
      st.image(wordcloud.to_image())     
 with row1_col2:
-     mode_year_finished = int(books_df['Year Finished'].mode()[0])
-     st.write(f'#### You have finished the most books in {mode_year_finished}.')
-     st.plotly_chart(fig_year_finished)
+     st.write('#### The books you have read or were interested in reading were published in these years. This chart is zoomed into the period of 1980-2023. Zoom in and out for other time periods.')
+     st.plotly_chart(fig_year_published)
      mean_days_to_finish = int(books_finished_filtered['days_to_finish'].mean())
      st.write(f'#### It took you an average of {mean_days_to_finish} days between when the book was added to Goodreads and when you finished the book. This is not a perfect metric, as you may have added this book to a "want to read" list.')
      st.plotly_chart(fig_days_finished)
@@ -199,8 +198,9 @@ with row2_col1:
      st.write(f'#### Your books are an average of {avg_pages} pages long.')
      st.plotly_chart(fig_num_pages)
 with row2_col2:
-     st.write('#### The books you have read or were interested in reading were published in these years. This chart is zoomed into the period of 1980-2023. Zoom in and out for other time periods.')
-     st.plotly_chart(fig_year_published)
+     mode_year_finished = int(books_df['Year Finished'].mode()[0])
+     st.write(f'#### You have finished the most books in {mode_year_finished}.')
+     st.plotly_chart(fig_year_finished)
 with row3_col1:
      avg_my_rating = round(books_rated['My Rating'].mean(),2)
      st.write(f'#### You rate an average of {avg_my_rating} stars on Goodreads.')
