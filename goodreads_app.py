@@ -113,11 +113,10 @@ fig_num_pages.update_layout(yaxis_title='')
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
 fig_year_published = px.bar(
-    books_publication_year,
-    x='Year Published',
-    y='Count',
-    hover_data={'Title': books_df['Title']}
-)
+                            books_publication_year,
+                            x='Year Published',
+                            y='Count',
+                            hover_data={'Title': books_df['Title']})
 fig_year_published.update_xaxes(range=[1980,2023])
 fig_year_published.update_layout(yaxis_title='')
 
