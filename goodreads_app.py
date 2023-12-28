@@ -107,9 +107,9 @@ fig_num_pages = px.histogram(books_df,x='Number of Pages')
 fig_num_pages.update_layout(yaxis_title='')
 
 
-# Function to aggregate titles without grouping
 def aggregate_all_titles(dataframe, title_col):
-    return dataframe.groupby('Original Publication Year')[title_col].agg(list).reset_index(name='All Titles')
+    return dataframe.groupby('Year Published')[title_col].agg(lambda x: '<br>'.join(x)).reset_index(name='All Titles')
+
 
 # Aggregate all titles
 all_titles = aggregate_all_titles(books_df, 'Title')
@@ -119,24 +119,24 @@ all_titles = aggregate_all_titles(books_df, 'Title')
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
 
-# Create a new DataFrame for each title
-df_list = []
-for index, row in books_publication_year.iterrows():
-    year = row['Year Published']
-    count = row['Count']
-    titles = all_titles[all_titles['Original Publication Year'] == year]['All Titles'].iloc[0]
-    titles_list = titles if isinstance(titles, list) else [titles] * count
-    df_list.append(pd.DataFrame({'Year Published': [year] * len(titles_list), 'Title': titles_list}))
+# Reset index before merging
+books_publication_year = books_publication_year.reset_index(drop=True)
+all_titles = all_titles.reset_index(drop=True)
 
-# Concatenate the DataFrames
-result_df = pd.concat(df_list, ignore_index=True)
+# Merge with all_titles using the index
+books_publication_year = pd.merge(books_publication_year, all_titles, how='left', left_index=True, right_index=True)
 
+# Drop rows with NaN values in the "All Titles" column
+books_publication_year = books_publication_year.dropna(subset=['All Titles'])
+
+# Rename columns to avoid conflicts
+books_publication_year = books_publication_year.rename(columns={'Year Published_x': 'Year Published'})
 
 fig_year_published = px.bar(
                             books_publication_year,
                             x='Year Published',
                             y='Count',
-                            hover_data=['Title']
+                            hover_data=['All Titles']
                             )
 fig_year_published.update_xaxes(range=[1980,2023])
 fig_year_published.update_layout(yaxis_title='')
