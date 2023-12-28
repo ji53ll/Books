@@ -108,7 +108,7 @@ fig_num_pages.update_layout(yaxis_title='')
 
 
 def aggregate_all_titles(dataframe, title_col):
-    return dataframe.groupby('Year Published')[title_col].agg(lambda x: ', '.join(x)).reset_index(name='All Titles')
+    return dataframe.groupby('Year Published')[title_col].agg(lambda x: '<br>'.join(x)).reset_index(name='All Titles')
 
 
 # Aggregate all titles
