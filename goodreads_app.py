@@ -75,7 +75,10 @@ books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
 books_per_year.columns = ['Year Finished', 'Count']
 
-fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count')
+fig_year_finished = px.bar(books_per_year, 
+                           x='Year Finished', 
+                           y='Count',
+                           color='Year Finished')
 
 
 # Explicitly set the x-axis type to 'category' and get rid of y label
@@ -162,11 +165,9 @@ fig_year_published.update_layout(yaxis_title='')
 
 books_rated = books_df[books_df['My Rating']!= 0]
 fig_my_rating = px.histogram(books_rated, 
-                             x='My Rating',
-                             color='My Rating')
+                             x='My Rating')
 fig_avg_rating = px.histogram(books_rated,
-                             x='Average Rating',
-                             color='Average Rating')
+                             x='Average Rating')
 fig_my_rating.update_layout(yaxis_title='')
 fig_avg_rating.update_layout(yaxis_title='')
 
