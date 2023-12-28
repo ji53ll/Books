@@ -125,7 +125,7 @@ row1_col1, row1_col2 = st.columns(2)
 row2_col1, row2_col2 = st.columns(2)
 row3_col1, row3_col2 = st.columns(2)
 with row1_col1:
-     st.image(wordcloud.to_image(), use_container_width=True)
+     st.image(wordcloud.to_image())
      mode_year_finished = int(books_df['Year Finished'].mode()[0])
      st.plotly_chart(fig_year_finished)
      st.write(f'You have finished the most books in {mode_year_finished}.')
