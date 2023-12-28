@@ -107,9 +107,9 @@ fig_num_pages = px.histogram(books_df,x='Number of Pages')
 fig_num_pages.update_layout(yaxis_title='')
 
 
+# Function to aggregate titles without grouping
 def aggregate_all_titles(dataframe, title_col):
-    return dataframe.groupby('Year Published')[title_col].agg(lambda x: '<br>'.join(x)).reset_index(name='All Titles')
-
+    return dataframe.groupby('Original Publication Year')[title_col].agg(list).reset_index(name='All Titles')
 
 # Aggregate all titles
 all_titles = aggregate_all_titles(books_df, 'Title')
@@ -125,6 +125,9 @@ all_titles = all_titles.reset_index(drop=True)
 
 # Merge with all_titles using the index
 books_publication_year = pd.merge(books_publication_year, all_titles, how='left', left_index=True, right_index=True)
+
+# Explode the titles column to have one row per title
+books_publication_year = books_publication_year.explode('All Titles')
 
 # Drop rows with NaN values in the "All Titles" column
 books_publication_year = books_publication_year.dropna(subset=['All Titles'])
