@@ -75,7 +75,7 @@ books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
 books_per_year.columns = ['Year Finished', 'Count']
 
-fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count',custom_data=['Title'])
+fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count',hover_data=['Title'])
 
 
 # Explicitly set the x-axis type to 'category' and get rid of y label
@@ -97,13 +97,13 @@ st.write(f'#### Your app results can be found below.')
 row1_col1, row1_col2 = st.columns(2)
 
 fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
-                                 labels={'days_to_finish':'days'})
+                                 labels={'days_to_finish':'days'}, hover_data=['Title'])
 fig_days_finished.update_layout(yaxis_title='')
 
 
 #####
 
-fig_num_pages = px.histogram(books_df,x='Number of Pages',custom_data=['Title'])
+fig_num_pages = px.histogram(books_df,x='Number of Pages',hover_data=['Title'])
 fig_num_pages.update_layout(yaxis_title='')
 
 
@@ -112,7 +112,7 @@ fig_num_pages.update_layout(yaxis_title='')
 
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
-fig_year_published = px.bar(books_publication_year,x='Year Published',y='Count',custom_data=['Title'])
+fig_year_published = px.bar(books_publication_year,x='Year Published',y='Count',hover_data=['Title'])
 fig_year_published.update_xaxes(range=[1980,2023])
 fig_year_published.update_layout(yaxis_title='')
 
@@ -122,8 +122,8 @@ fig_year_published.update_layout(yaxis_title='')
 ####
 
 books_rated = books_df[books_df['My Rating']!= 0]
-fig_my_rating = px.histogram(books_rated, x='My Rating',custom_data=['Title'])
-fig_avg_rating = px.histogram(books_rated,x='Average Rating',custom_data=['Title'])
+fig_my_rating = px.histogram(books_rated, x='My Rating',hover_data=['Title'])
+fig_avg_rating = px.histogram(books_rated,x='Average Rating',hover_data=['Title'])
 fig_my_rating.update_layout(yaxis_title='')
 fig_avg_rating.update_layout(yaxis_title='')
 
