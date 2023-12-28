@@ -34,13 +34,13 @@ st.subheader('Web app by [Jisell Howe](https://www.jisellhowe.com)')
 This app analyzes (but does not store) the books you've read using Goodreads. Upload your data to see your own insights.
 """
 
-goodreads_file = st.file_uploader('Please Import Your Goodreads Data')
+goodreads_file = st.file_uploader('## Please Import Your Goodreads Data')
 if goodreads_file is None:
     books_df = pd.read_csv('goodreads_library_export_JH.csv')
-    st.subheader("Analyzing Jisell's Goodreads History")
+    st.write("# Analyzing Jisell's Goodreads History")
 else:
     books_df = pd.read_csv(goodreads_file)
-    st.subheader('Analyzing your Goodreads History')
+    st.write('# Analyzing your Goodreads History')
 
 #### pre-processing on titles
     
