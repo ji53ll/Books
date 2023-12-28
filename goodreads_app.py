@@ -75,7 +75,7 @@ books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
 books_per_year.columns = ['Year Finished', 'Count']
 
-fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count', title='Books Finished Per Year')
+fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count')
 
 # Explicitly set the x-axis type to 'category'
 fig_year_finished.update_layout(xaxis_type='category')
@@ -92,7 +92,7 @@ st.write(f'#### It appears you have finished {u_books} books iwth a total of {u_
 st.write(f'#### Your app results can be found below.')
 row1_col1, row1_col2 = st.columns(2)
 
-fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish', title='Time Between Date Added and Date Finished',
+fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
                                  labels={'days_to_finish':'days'})
 
 #####
@@ -104,14 +104,14 @@ fig_num_pages = px.histogram(books_df,x='Number of Pages',
 
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
-fig_year_published = px.bar(books_publication_year,x='Year Published',y='Count',title='Book Age Plot')
+fig_year_published = px.bar(books_publication_year,x='Year Published',y='Count')
 fig_year_published.update_xaxes(range=[1980,2023])
 
 
 ####
 
 books_rated = books_df[books_df['My Rating']!= 0]
-fig_my_rating = px.histogram(books_rated, x='My Rating', title='User Rating')
+fig_my_rating = px.histogram(books_rated, x='My Rating')
 fig_avg_rating = px.histogram(books_rated,x='Average Rating',
                               title='Average Goodreads Rating')
 
