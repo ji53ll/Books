@@ -94,8 +94,9 @@ fig_year_finished = px.bar(books_per_year,
                            color_continuous_scale=color_scale_for_bars)
 
 
-# Explicitly set the x-axis type to 'category' and get rid of y label
+# Explicitly set the x-axis type to 'category'; get rid of y label & legend
 fig_year_finished.update_layout(xaxis_type='category', yaxis_title='')
+fig_year_finished.update_traces(showlegend=False)
 
 
 
@@ -108,8 +109,8 @@ books_finished_filtered = books_df[(books_df['Exclusive Shelf'] == 'read') & (bo
 u_books = len(books_finished_filtered['Author'].unique())
 u_authors = len(books_finished_filtered['Author'].unique())
 mode_author = books_finished_filtered['Author'].mode()[0]
-st.write(f'#### It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
-st.write(f'#### Your app results can be found below.')
+st.subheader(f'It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
+st.subheader(f'#### Your app results can be found below.')
 
 
 fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
@@ -171,6 +172,7 @@ fig_year_published = px.bar(
                             )
 fig_year_published.update_xaxes(range=[1980,2024])
 fig_year_published.update_layout(yaxis_title='')
+fig_year_published.update_traces(showlegend=False)
 
 
 
