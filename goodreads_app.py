@@ -120,7 +120,7 @@ fig_year_published = px.bar(
                             books_publication_year,
                             x='Year Published',
                             y='Count',
-                            hover_data=hover_data_titles
+                            hover_data={'Title':hover_data_titles}
                             )
 fig_year_published.update_xaxes(range=[1980,2023])
 fig_year_published.update_layout(yaxis_title='')
