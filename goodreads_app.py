@@ -39,7 +39,8 @@ def load_lottieurl(url:str):
     if r.status_code != 200:
         return None
     return r.json()
-file_url = 'https://assets4.lottiefiles.com/temp/lf20_aKAfIn.json'
+#file_url = 'https://assets4.lottiefiles.com/temp/lf20_aKAfIn.json'
+file_url = 'https://lottie.host/d444a43b-2c5f-4709-b100-8708bc6bb344/FDGGNBK4tN.json'
 lottie_book = load_lottieurl(file_url)
 st_lottie(lottie_book, speed=1, height=200, key='initial')
 
