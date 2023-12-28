@@ -49,10 +49,10 @@ This app analyzes (but does not store) the books you've read using Goodreads. Up
 goodreads_file = st.file_uploader('## Please Import Your Goodreads Data')
 if goodreads_file is None:
     books_df = pd.read_csv('goodreads_library_export_JH.csv')
-    st.write("# Analyzing Jisell's Goodreads History")
+    st.write("## Analyzing Jisell's Goodreads History")
 else:
     books_df = pd.read_csv(goodreads_file)
-    st.write('# Analyzing your Goodreads History')
+    st.write('## Analyzing your Goodreads History')
 
 #### pre-processing on titles
     
@@ -109,8 +109,8 @@ books_finished_filtered = books_df[(books_df['Exclusive Shelf'] == 'read') & (bo
 u_books = len(books_finished_filtered['Author'].unique())
 u_authors = len(books_finished_filtered['Author'].unique())
 mode_author = books_finished_filtered['Author'].mode()[0]
-st.subheader(f'It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
-st.subheader(f'#### Your app results can be found below.')
+st.write(f'###### It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
+st.write(f'###### Your app results can be found below.')
 
 
 fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
