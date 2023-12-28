@@ -60,11 +60,6 @@ fig_num_pages = px.histogram(books_df,x='Number of Pages',
 
 #####
 
-st.write('Assumption check')
-st.write(len(books_df[books_df['Original Publication Year'] > books_df['Year Published']]))
-
-####
-
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
 st.write(books_df.sort_values(by='Original Publication Year').head())
@@ -94,11 +89,11 @@ row3_col1, row3_col2 = st.columns(2)
 with row1_col1:
      mode_year_finished = int(books_df['Year Finished'].mode()[0])
      st.plotly_chart(fig_year_finished)
-     st.write('You have finished the most books in {mode_year_finished}.')
+     st.write(f'You have finished the most books in {mode_year_finished}.')
 with row1_col2:
      st.plotly_chart(fig_days_finished)
      mean_days_to_finish = int(books_finished_filtered['days_to_finish'].mean())
-     st.write('It took you an average of {mean_days_to_finish} days between when the book was added to Goodreads and when you finished the book. This is not a perfect metric, as you may have added this book to a "want to read" list.')
+     st.write(f'It took you an average of {mean_days_to_finish} days between when the book was added to Goodreads and when you finished the book. This is not a perfect metric, as you may have added this book to a "want to read" list.')
 with row2_col1:
      st.plotly_chart(fig_num_pages)
      avg_pages = int(books_df['Number of Pages'].mean())
@@ -113,3 +108,4 @@ with row3_col1:
 with row3_col2:
      st.plotly_chart(fig_avg_rating)
      st.write(f"You rate books {sign} than the average Goodreads user by {abs(avg_difference)}!")
+
