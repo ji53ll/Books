@@ -67,10 +67,7 @@ text = ' '.join(books_df['cleaned_titles'])
 # Generate word cloud
 wordcloud = WordCloud(width=700, height=1000, background_color='white').generate(text)
 
-# Display the word cloud using Streamlit
-st.pyplot(plt.figure(figsize=(10, 5)))
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis('off')
+
 
 #####
 
