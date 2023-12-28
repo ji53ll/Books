@@ -62,9 +62,8 @@ fig_num_pages = px.histogram(books_df,x='Number of Pages',
 
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
-st.write(books_df.sort_values(by='Original Publication Year').head())
 fig_year_published = px.bar(books_publication_year,x='Year Published',y='Count',title='Book Age Plot')
-fig_year_published.update_xaxes(range=[1950,2023])
+fig_year_published.update_xaxes(range=[1980,2023])
 
 
 ####
@@ -100,7 +99,7 @@ with row2_col1:
      st.write(f'Your books are an average of {avg_pages} pages long.')
 with row2_col2:
      st.plotly_chart(fig_year_published)
-     st.write('This chart is zoomed into the period of 1950-2023. Zoom in and out for other time periods.')
+     st.write('This chart is zoomed into the period of 1980-2023. Zoom in and out for other time periods.')
 with row3_col1:
      st.plotly_chart(fig_my_rating)
      avg_my_rating = round(books_rated['My Rating'].mean(),2)
