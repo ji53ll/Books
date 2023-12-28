@@ -125,7 +125,7 @@ books_publication_year.columns = ['Year Published','Count']
 adjusted_counts = []
 for index, row in books_publication_year.iterrows():
     year = row['Year Published']
-    titles = all_titles[all_titles['Original Publication Year'] == year]['All Titles'].iloc[0]
+    titles = all_titles[all_titles['Year Published'] == year]['All Titles'].iloc[0]
     count = len(titles) if isinstance(titles, list) else 1
     adjusted_counts.append(count)
 
