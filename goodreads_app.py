@@ -75,8 +75,9 @@ books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
 books_per_year.columns = ['Year Finished', 'Count']
 
-# Convert 'Year Finished' to category to ensure only whole years are displayed
-books_per_year['Year Finished'] = books_per_year['Year Finished'].astype('category')
+# Convert 'Year Finished' to a custom ordered categorical variable
+years_ordered = sorted(books_per_year['Year Finished'].unique())
+books_per_year['Year Finished'] = pd.Categorical(books_per_year['Year Finished'], categories=years_ordered, ordered=True)
 
 fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count', title='Books Finished Per Year')
 
