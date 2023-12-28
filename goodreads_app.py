@@ -122,8 +122,12 @@ all_titles = aggregate_all_titles(books_df, 'Title')
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
 
+# Reset index before merging
+books_publication_year = books_publication_year.reset_index(drop=True)
+all_titles = all_titles.reset_index(drop=True)
+
 # Merge with all_titles using index-based merge
-books_publication_year = pd.merge(books_publication_year, all_titles, how='left', left_on=books_publication_year.index, right_on=all_titles.index)
+books_publication_year = pd.merge(books_publication_year, all_titles, how='left', left_index=True, right_index=True)
 
 # Fill NaN values in string columns with an empty string
 books_publication_year = books_publication_year.apply(lambda col: col.fillna('') if col.dtypes == 'object' else col)
