@@ -16,6 +16,7 @@ nltk.download('stopwords')
 
 
 st.set_page_config(layout="wide")
+st.set_option('deprecation.showPyplotGlobalUse', False)
 def load_lottieurl(url:str):
     r = requests.get(url)
     if r.status_code != 200:
