@@ -64,7 +64,7 @@ books_df['cleaned_titles'] = books_df['Title'].apply(preprocess_title)
 text = ' '.join(books_df['cleaned_titles'])
 
 # Generate word cloud
-wordcloud = WordCloud(width=600, height=800, background_color='white').generate(text)
+wordcloud = WordCloud(width=700, height=800, background_color='white').generate(text)
 
 # Display the word cloud using Streamlit
 st.pyplot(plt.figure(figsize=(10, 5)))
@@ -127,9 +127,9 @@ row3_col1, row3_col2 = st.columns(2)
 with row1_col1:
      st.image(wordcloud.to_image())
      mode_year_finished = int(books_df['Year Finished'].mode()[0])
+with row1_col2:
      st.plotly_chart(fig_year_finished)
      st.write(f'You have finished the most books in {mode_year_finished}.')
-with row1_col2:
      st.plotly_chart(fig_days_finished)
      mean_days_to_finish = int(books_finished_filtered['days_to_finish'].mean())
      st.write(f'It took you an average of {mean_days_to_finish} days between when the book was added to Goodreads and when you finished the book. This is not a perfect metric, as you may have added this book to a "want to read" list.')
