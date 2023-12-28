@@ -23,8 +23,8 @@ st.set_page_config(
 
 #### Color theming
 
-color_scale_for_bars = 'Emrld'
-color_scale_for_wordcloud = 'Emrld'
+color_scale_for_bars = 'BuGn'
+color_scale_for_wordcloud = 'BuGn'
 # Define your color for the histogram
 histogram_color = '#FF5733' 
 
