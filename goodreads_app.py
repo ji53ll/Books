@@ -132,26 +132,27 @@ row2_col1, row2_col2 = st.columns(2)
 row3_col1, row3_col2 = st.columns(2)
 with row1_col1:
      st.write(" ### Your Most Common Book Themes")
-     st.image(wordcloud.to_image())
-     mode_year_finished = int(books_df['Year Finished'].mode()[0])
+     st.image(wordcloud.to_image())     
 with row1_col2:
+     mode_year_finished = int(books_df['Year Finished'].mode()[0])
+     st.write(f'#### You have finished the most books in {mode_year_finished}.')
      st.plotly_chart(fig_year_finished)
-     st.write(f'You have finished the most books in {mode_year_finished}.')
-     st.plotly_chart(fig_days_finished)
      mean_days_to_finish = int(books_finished_filtered['days_to_finish'].mean())
-     st.write(f'It took you an average of {mean_days_to_finish} days between when the book was added to Goodreads and when you finished the book. This is not a perfect metric, as you may have added this book to a "want to read" list.')
+     st.write(f'#### It took you an average of {mean_days_to_finish} days between when the book was added to Goodreads and when you finished the book. This is not a perfect metric, as you may have added this book to a "want to read" list.')
+     st.plotly_chart(fig_days_finished)
 with row2_col1:
-     st.plotly_chart(fig_num_pages)
      avg_pages = int(books_df['Number of Pages'].mean())
-     st.write(f'Your books are an average of {avg_pages} pages long.')
+     st.write(f'#### Your books are an average of {avg_pages} pages long.')
+     st.plotly_chart(fig_num_pages)
 with row2_col2:
+     st.write('#### The books you have read were published in these years. This chart is zoomed into the period of 1980-2023. Zoom in and out for other time periods.')
      st.plotly_chart(fig_year_published)
-     st.write('This chart is zoomed into the period of 1980-2023. Zoom in and out for other time periods.')
 with row3_col1:
-     st.plotly_chart(fig_my_rating)
      avg_my_rating = round(books_rated['My Rating'].mean(),2)
-     st.write(f'You rate an average of {avg_my_rating} stars on Goodreads.')
+     st.write(f'#### You rate an average of {avg_my_rating} stars on Goodreads.')
+     st.plotly_chart(fig_my_rating)
 with row3_col2:
+     st.write(f'#### You rate books {sign} than the average Goodreads user by {abs(avg_difference)}!')
      st.plotly_chart(fig_avg_rating)
-     st.write(f"You rate books {sign} than the average Goodreads user by {abs(avg_difference)}!")
+     
 
