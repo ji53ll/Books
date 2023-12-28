@@ -96,7 +96,15 @@ st.write(f'#### It appears you have finished {u_books} books with a total of {u_
 st.write(f'#### Your app results can be found below.')
 
 
+fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
+                                 labels={'days_to_finish':'days'})
+fig_days_finished.update_layout(yaxis_title='')
 
+
+#####
+
+fig_num_pages = px.histogram(books_df,x='Number of Pages')
+fig_num_pages.update_layout(yaxis_title='')
 
 
 def aggregate_all_titles(dataframe, title_col):
@@ -106,17 +114,6 @@ def aggregate_all_titles(dataframe, title_col):
 # Aggregate all titles
 all_titles = aggregate_all_titles(books_df, 'Title')
 
-#####
-
-fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish', hover_data=['All Titles'],
-                                 labels={'days_to_finish':'days'})
-fig_days_finished.update_layout(yaxis_title='')
-
-
-#####
-
-fig_num_pages = px.histogram(books_df,x='Number of Pages', hover_data='All Titles')
-fig_num_pages.update_layout(yaxis_title='')
 
 
 #####
