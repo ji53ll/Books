@@ -125,8 +125,11 @@ books_publication_year.columns = ['Year Published','Count']
 # Merge with all_titles using index-based merge
 books_publication_year = pd.merge(books_publication_year, all_titles, how='left', left_on=books_publication_year.index, right_on=all_titles.index)
 
-# Fill NaN values in the "Title" column with an empty string
-books_publication_year['Title'] = books_publication_year['Title'].fillna('')
+# Fill NaN values in string columns with an empty string
+books_publication_year = books_publication_year.apply(lambda col: col.fillna('') if col.dtypes == 'object' else col)
+
+# Drop rows with NaN values in the "Title" column
+books_publication_year = books_publication_year.dropna(subset=['Title'])
 
 
 
