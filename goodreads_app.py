@@ -77,7 +77,7 @@ books_df['cleaned_titles'] = books_df['Title'].apply(preprocess_title)
 text = ' '.join(books_df['cleaned_titles'])
 
 # Generate word cloud
-wordcloud = WordCloud(width=700, height=1075, background_color='white',colormap=color_scale_for_wordcloud).generate(text)
+wordcloud = WordCloud(width=700, height=1070, background_color='white',colormap=color_scale_for_wordcloud).generate(text)
 
 
 
