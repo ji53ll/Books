@@ -73,9 +73,9 @@ wordcloud = WordCloud(width=700, height=1000, background_color='white').generate
 
 books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
-books_per_year.columns = ['Year Finished', 'Count']
+books_per_year.columns = ['Year Finished', 'Count', 'Title']
 
-fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count',hover_data=['Title'])
+fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count', hover_data=['Title'])
 
 
 # Explicitly set the x-axis type to 'category' and get rid of y label
