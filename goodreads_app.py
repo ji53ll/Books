@@ -23,8 +23,10 @@ st.set_page_config(
 
 #### Color theming
 
-color_scale_for_bars = 'Blues'
-color_scale_for_wordcloud = 'Blues'
+color_scale_for_bars = 'Emrld'
+color_scale_for_wordcloud = 'Emrld'
+# Define your color for the histogram
+histogram_color = '#FF5733' 
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
@@ -114,14 +116,18 @@ st.write(f'###### It appears you have finished {u_books} books with a total of {
 st.write(f'###### Your app results can be found below.')
 
 
-fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
-                                 labels={'days_to_finish':'days'})
+fig_days_finished = px.histogram(books_finished_filtered, 
+                                 x='days_to_finish',
+                                 labels={'days_to_finish':'days'},
+                                 color_discrete_sequence=[histogram_color])
 fig_days_finished.update_layout(yaxis_title='',showlegend=False)
 
 
 #####
 
-fig_num_pages = px.histogram(books_df,x='Number of Pages')
+fig_num_pages = px.histogram(books_df,
+                             x='Number of Pages',
+                             color_discrete_sequence=[histogram_color])
 fig_num_pages.update_layout(yaxis_title='',showlegend=False)
 
 
@@ -185,9 +191,11 @@ fig_year_finished.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext
 
 books_rated = books_df[books_df['My Rating']!= 0]
 fig_my_rating = px.histogram(books_rated, 
-                             x='My Rating')
+                             x='My Rating',
+                             color_discrete_sequence=[histogram_color])
 fig_avg_rating = px.histogram(books_rated,
-                             x='Average Rating')
+                             x='Average Rating',
+                             color_discrete_sequence=[histogram_color])
 fig_my_rating.update_layout(yaxis_title='')
 fig_avg_rating.update_layout(yaxis_title='',showlegend=False)
 
