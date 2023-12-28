@@ -56,7 +56,7 @@ banner_style = """
 
 # Use HTML to create the banner
 st.write(
-    '<div style="{}"><h1>Analyzing Your Goodreads Reading Habits</h1></div>'.format(banner_style),
+    '<div style="{}"><h1>Books in Review</h1></div>'.format(banner_style),
     unsafe_allow_html=True,
 )
 
@@ -68,15 +68,15 @@ This app analyzes (but does not store) the books you've read using Goodreads. Up
 """
 
 # Assuming half the screen width for the file uploader
-file_col, _ = st.columns(2)
+_, file_col = st.columns(2)
 
 goodreads_file = file_col.file_uploader('## Please Import Your Goodreads Data')
 if goodreads_file is None:
     books_df = pd.read_csv('goodreads_library_export_JH.csv')
-    st.write("## Analyzing Jisell's Goodreads History")
+    st.write("### Analyzing Jisell's Goodreads History")
 else:
     books_df = pd.read_csv(goodreads_file)
-    st.write('## Analyzing your Goodreads History')
+    st.write('### Analyzing your Goodreads History')
 
 #### pre-processing on titles
     
