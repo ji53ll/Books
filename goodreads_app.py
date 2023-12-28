@@ -88,8 +88,8 @@ books_finished_filtered = books_df[(books_df['Exclusive Shelf'] == 'read') & (bo
 u_books = len(books_finished_filtered['Author'].unique())
 u_authors = len(books_finished_filtered['Author'].unique())
 mode_author = books_finished_filtered['Author'].mode()[0]
-st.write(f'## It appears you have finished {u_books} books iwth a total of {u_authors} unique authors. Your most read author is {mode_author}.')
-st.write(f'## Your app results can be found below.')
+st.write(f'### It appears you have finished {u_books} books iwth a total of {u_authors} unique authors. Your most read author is {mode_author}.')
+st.write(f'### Your app results can be found below.')
 row1_col1, row1_col2 = st.columns(2)
 
 fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish', title='Time Between Date Added and Date Finished',
@@ -127,7 +127,7 @@ row1_col1, row1_col2 = st.columns(2)
 row2_col1, row2_col2 = st.columns(2)
 row3_col1, row3_col2 = st.columns(2)
 with row1_col1:
-     st.title("Your Most Common Book Themes")
+     st.write(" ### Your Most Common Book Themes")
      st.image(wordcloud.to_image())
      mode_year_finished = int(books_df['Year Finished'].mode()[0])
 with row1_col2:
