@@ -31,24 +31,17 @@ histogram_color = '#94D7F2'
 
 # Set the background color and height of the banner
 banner_style = """
-    <style>
-        .banner {
-            padding: 10px;
-            background-color: #94D7F2;  /* You can use any valid color representation */
-            color: white;
-            text-align: center;
-            font-size: 24px;
-        }
-    </style>
+    background-color: #3498db;  /* You can use any valid color representation */
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    padding: 10px;
+    border-radius: 10px;  /* Optional: adds rounded corners to the banner */
 """
 
 # Display the banner using st.markdown
 st.markdown(
-    """
-    <div style="{}">
-        Your Banner Text Here
-    </div>
-    """.format(banner_style),
+    '<div style="{}">Your Banner Text Here</div>'.format(banner_style),
     unsafe_allow_html=True,
 )
 
