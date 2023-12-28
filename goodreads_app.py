@@ -34,14 +34,13 @@ banner_style = """
     background-color: #3498db;  /* You can use any valid color representation */
     color: white;
     text-align: center;
-    font-size: 60px;
     padding: 10px;
     border-radius: 10px;  /* Optional: adds rounded corners to the banner */
 """
 
-# Display the banner using st.markdown
-st.markdown(
-    '<div style="{}">Your Banner Text Here</div>'.format(banner_style),
+# Use HTML to create the banner
+st.write(
+    '<div style="{}"><h1>Your Banner Text Here</h1></div>'.format(banner_style),
     unsafe_allow_html=True,
 )
 
