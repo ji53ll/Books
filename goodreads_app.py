@@ -94,17 +94,9 @@ u_authors = len(books_finished_filtered['Author'].unique())
 mode_author = books_finished_filtered['Author'].mode()[0]
 st.write(f'#### It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
 st.write(f'#### Your app results can be found below.')
-row1_col1, row1_col2 = st.columns(2)
-
-fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
-                                 labels={'days_to_finish':'days'})
-fig_days_finished.update_layout(yaxis_title='')
 
 
-#####
 
-fig_num_pages = px.histogram(books_df,x='Number of Pages')
-fig_num_pages.update_layout(yaxis_title='')
 
 
 def aggregate_all_titles(dataframe, title_col):
@@ -114,6 +106,17 @@ def aggregate_all_titles(dataframe, title_col):
 # Aggregate all titles
 all_titles = aggregate_all_titles(books_df, 'Title')
 
+#####
+
+fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish', hover_data=['All Titles'],
+                                 labels={'days_to_finish':'days'})
+fig_days_finished.update_layout(yaxis_title='')
+
+
+#####
+
+fig_num_pages = px.histogram(books_df,x='Number of Pages', hover_data='All Titles')
+fig_num_pages.update_layout(yaxis_title='')
 
 
 #####
@@ -151,7 +154,7 @@ fig_year_published = px.bar(
                             y='Count',
                             hover_data=['All Titles']
                             )
-fig_year_published.update_xaxes(range=[1980,2023])
+fig_year_published.update_xaxes(range=[1980,2024])
 fig_year_published.update_layout(yaxis_title='')
 
 
@@ -160,8 +163,8 @@ fig_year_published.update_layout(yaxis_title='')
 ####
 
 books_rated = books_df[books_df['My Rating']!= 0]
-fig_my_rating = px.histogram(books_rated, x='My Rating')
-fig_avg_rating = px.histogram(books_rated,x='Average Rating')
+fig_my_rating = px.histogram(books_rated, x='My Rating', hover_data=['All Titles'])
+fig_avg_rating = px.histogram(books_rated,x='Average Rating', hover_data=['All Titles'])
 fig_my_rating.update_layout(yaxis_title='')
 fig_avg_rating.update_layout(yaxis_title='')
 
