@@ -29,6 +29,22 @@ color_scale_for_wordcloud = 'Blues'
 histogram_color = '#94D7F2' 
 
 
+
+
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
+
+def load_lottieurl(url:str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+file_url = 'https://assets4.lottiefiles.com/temp/lf20_aKAfIn.json'
+lottie_book = load_lottieurl(file_url)
+st_lottie(lottie_book, speed=1, height=200, key='initial')
+
+
+##### Banner
 # Set the background color and height of the banner
 banner_style = """
     background-color: #94D7F2;  /* You can use any valid color representation */
@@ -44,25 +60,17 @@ st.write(
     unsafe_allow_html=True,
 )
 
-st.set_option('deprecation.showPyplotGlobalUse', False)
-
-
-def load_lottieurl(url:str):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
-file_url = 'https://assets4.lottiefiles.com/temp/lf20_aKAfIn.json'
-lottie_book = load_lottieurl(file_url)
-st_lottie(lottie_book, speed=1, height=200, key='initial')
-
+######
 
 st.subheader('Web app by [Jisell Howe](https://www.jisellhowe.com)')
 """
 This app analyzes (but does not store) the books you've read using Goodreads. Upload your data to see your own insights.
 """
 
-goodreads_file = st.file_uploader('## Please Import Your Goodreads Data')
+# Assuming half the screen width for the file uploader
+file_col, _ = st.columns(2)
+
+goodreads_file = file_col.file_uploader('## Please Import Your Goodreads Data')
 if goodreads_file is None:
     books_df = pd.read_csv('goodreads_library_export_JH.csv')
     st.write("## Analyzing Jisell's Goodreads History")
