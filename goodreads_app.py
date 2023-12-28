@@ -120,13 +120,14 @@ all_titles = aggregate_all_titles(books_df, 'Title')
 
 
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
-books_publication_year.columns = ['Year Published','Count', 'Title']
+books_publication_year.columns = ['Year Published','Count']
 books_publication_year['Title'] = books_df['Title']
+print(books_publication_year)
 fig_year_published = px.bar(
                             books_publication_year,
                             x='Year Published',
                             y='Count',
-                            hover_data=['All Titles']
+                            hover_data=['Title']
                             )
 fig_year_published.update_xaxes(range=[1980,2023])
 fig_year_published.update_layout(yaxis_title='')
