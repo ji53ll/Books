@@ -31,10 +31,10 @@ histogram_color = '#94D7F2'
 
 # Set the background color and height of the banner
 banner_style = """
-    background-color: #3498db;  /* You can use any valid color representation */
+    background-color: #94D7F2;  /* You can use any valid color representation */
     color: white;
     text-align: center;
-    font-size: 24px;
+    font-size: 60px;
     padding: 10px;
     border-radius: 10px;  /* Optional: adds rounded corners to the banner */
 """
