@@ -107,9 +107,13 @@ fig_num_pages = px.histogram(books_df,x='Number of Pages')
 fig_num_pages.update_layout(yaxis_title='')
 
 
+# Function to aggregate titles without grouping
+def aggregate_all_titles(dataframe, title_col):
+    return dataframe[title_col].agg(lambda x: ', '.join(x)).reset_index(name='All Titles')
+
 
 # Repeat each title based on its count
-hover_data_titles = [title for title, count in zip(books_df['Title'], books_df.groupby('Year Finished')['Book Id'].transform('count'))]
+all_titles = aggregate_all_titles(books_df, 'Title')
 
 #####
 
@@ -120,7 +124,7 @@ fig_year_published = px.bar(
                             books_publication_year,
                             x='Year Published',
                             y='Count',
-                            hover_data=['Title']
+                            hover_data=['All Titles']
                             )
 fig_year_published.update_xaxes(range=[1980,2023])
 fig_year_published.update_layout(yaxis_title='')
