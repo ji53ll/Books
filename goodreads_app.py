@@ -149,6 +149,7 @@ fig_year_published = px.bar(
                             books_publication_year,
                             x='Year Published',
                             y='Count',
+                            color='Exclusive Shelf',
                             hover_data=['All Titles']
                             )
 fig_year_published.update_xaxes(range=[1980,2024])
@@ -193,7 +194,7 @@ with row2_col1:
      st.write(f'#### Your books are an average of {avg_pages} pages long.')
      st.plotly_chart(fig_num_pages)
 with row2_col2:
-     st.write('#### The books you have read were published in these years. This chart is zoomed into the period of 1980-2023. Zoom in and out for other time periods.')
+     st.write('#### The books you have read or were interested in reading were published in these years. This chart is zoomed into the period of 1980-2023. Zoom in and out for other time periods.')
      st.plotly_chart(fig_year_published)
 with row3_col1:
      avg_my_rating = round(books_rated['My Rating'].mean(),2)
