@@ -42,8 +42,15 @@ banner_style = """
     </style>
 """
 
-# Display the banner
-st.markdown(f'<div class="banner">Books In Review</div>', unsafe_allow_html=True)
+# Display the banner using st.markdown
+st.markdown(
+    """
+    <div style="{}">
+        Your Banner Text Here
+    </div>
+    """.format(banner_style),
+    unsafe_allow_html=True,
+)
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
