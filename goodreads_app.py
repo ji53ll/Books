@@ -75,14 +75,13 @@ books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
 books_per_year.columns = ['Year Finished', 'Count']
 
-fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count')
+fig_year_finished = px.bar(books_per_year, x='Year Finished', y='Count',custom_data=['Title'])
 
 
 # Explicitly set the x-axis type to 'category' and get rid of y label
 fig_year_finished.update_layout(xaxis_type='category', yaxis_title='')
 
-# Customize hover text to display book titles
-fig_year_finished.update_traces(text=books_df['Title'])
+
 
 
 #####
@@ -101,39 +100,34 @@ fig_days_finished = px.histogram(books_finished_filtered, x='days_to_finish',
                                  labels={'days_to_finish':'days'})
 fig_days_finished.update_layout(yaxis_title='')
 
-# Customize hover text to display book titles
-fig_days_finished.update_traces(text=books_df['Title'])
+
 #####
 
-fig_num_pages = px.histogram(books_df,x='Number of Pages')
+fig_num_pages = px.histogram(books_df,x='Number of Pages',custom_data=['Title'])
 fig_num_pages.update_layout(yaxis_title='')
 
-# Customize hover text to display book titles
-fig_num_pages.update_traces(text=books_df['Title'])
+
 
 #####
 
 books_publication_year = books_df.groupby('Original Publication Year')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
-fig_year_published = px.bar(books_publication_year,x='Year Published',y='Count')
+fig_year_published = px.bar(books_publication_year,x='Year Published',y='Count',custom_data=['Title'])
 fig_year_published.update_xaxes(range=[1980,2023])
 fig_year_published.update_layout(yaxis_title='')
 
-# Customize hover text to display book titles
-fig_year_published.update_traces(text=books_df['Title'])
+
 
 
 ####
 
 books_rated = books_df[books_df['My Rating']!= 0]
-fig_my_rating = px.histogram(books_rated, x='My Rating')
-fig_avg_rating = px.histogram(books_rated,x='Average Rating')
+fig_my_rating = px.histogram(books_rated, x='My Rating',custom_data=['Title'])
+fig_avg_rating = px.histogram(books_rated,x='Average Rating',custom_data=['Title'])
 fig_my_rating.update_layout(yaxis_title='')
 fig_avg_rating.update_layout(yaxis_title='')
 
-# Customize hover text to display book titles
-fig_my_rating.update_traces(text=books_df['Title'])
-fig_avg_rating.update_traces(text=books_df['Title'])
+
 
 avg_difference = np.round(np.mean(books_rated['My Rating'] - books_rated['Average Rating']),2)
 if avg_difference >= 0:
