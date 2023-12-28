@@ -4,6 +4,16 @@ import plotly.express as px
 import numpy as np
 from streamlit_lottie import st_lottie
 import requests
+from nltk.corpus import stopwords
+from wordcloud import STOPWORDS
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
+# Download NLTK stopwords (if not already downloaded)
+import nltk
+nltk.download('stopwords')
+
+
 
 st.set_page_config(layout="wide")
 def load_lottieurl(url:str):
@@ -30,6 +40,37 @@ if goodreads_file is None:
 else:
     books_df = pd.read_csv(goodreads_file)
     st.subheader('Analyzing your Goodreads History')
+
+#### pre-processing on titles
+    
+# Combine NLTK and WordCloud stopwords
+stop_words = set(stopwords.words('english') + list(STOPWORDS))
+
+# Function to remove stop words and other preprocessing
+def preprocess_title(title):
+    # Convert to lowercase and remove punctuation (add more cleaning steps if needed)
+    title = title.lower().replace('.', '').replace(',', '')
+
+    # Remove stop words
+    title = ' '.join([word for word in title.split() if word not in stop_words])
+
+    return title
+
+# Apply preprocessing to the "titles" column
+books_df['cleaned_titles'] = books_df['Title'].apply(preprocess_title)
+
+
+# Combine cleaned titles into a single string
+text = ' '.join(books_df['cleaned_titles'])
+
+# Generate word cloud
+wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
+
+# Display the word cloud using Matplotlib
+plt.figure(figsize=(10, 5))
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')
+plt.show()
 
 #####
 
@@ -70,7 +111,6 @@ fig_year_published.update_xaxes(range=[1980,2023])
 
 books_rated = books_df[books_df['My Rating']!= 0]
 fig_my_rating = px.histogram(books_rated, x='My Rating', title='User Rating')
-st.plotly_chart(fig_my_rating)
 fig_avg_rating = px.histogram(books_rated,x='Average Rating',
                               title='Average Goodreads Rating')
 
@@ -86,6 +126,7 @@ row1_col1, row1_col2 = st.columns(2)
 row2_col1, row2_col2 = st.columns(2)
 row3_col1, row3_col2 = st.columns(2)
 with row1_col1:
+     st.image(wordcloud.to_image(), use_container_width=True)
      mode_year_finished = int(books_df['Year Finished'].mode()[0])
      st.plotly_chart(fig_year_finished)
      st.write(f'You have finished the most books in {mode_year_finished}.')
