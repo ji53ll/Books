@@ -107,26 +107,9 @@ text = ' '.join(books_df['cleaned_titles'])
 # Generate word cloud
 wordcloud = WordCloud(width=700, height=1067, background_color='white',colormap=color_scale_for_wordcloud).generate(text)
 
-
-
 #####
 
-books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
-books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
-books_per_year.columns = ['Year Finished', 'Count']
-
-fig_year_finished = px.bar(books_per_year, 
-                           x='Year Finished', 
-                           y='Count',
-                           color='Year Finished',
-                           color_discrete_map=color_scale_for_bars)
-
-
-# Explicitly set the x-axis type to 'category'; get rid of y label & legend
-fig_year_finished.update_layout(xaxis_type='category', yaxis_title='',showlegend=False,coloraxis_showscale=False)
-# Remove color bar legend
-fig_year_finished.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext=[]))
-
+print(books_df.columns)
 
 
 
@@ -140,6 +123,10 @@ u_authors = len(books_finished_filtered['Author'].unique())
 mode_author = books_finished_filtered['Author'].mode()[0]
 right_col.write(f'###### It appears you have finished {u_books} books with a total of {u_authors} unique authors. Your most read author is {mode_author}.')
 left_col.write(f'###### Your app results can be found below.')
+
+books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
+books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
+books_per_year.columns = ['Year Finished', 'Count']
 
 
 fig_days_finished = px.histogram(books_finished_filtered, 
@@ -157,12 +144,20 @@ fig_num_pages = px.histogram(books_df,
 fig_num_pages.update_layout(yaxis_title='',showlegend=False)
 
 
-def aggregate_all_titles(dataframe, title_col):
+def aggregate_all_titles_pub(dataframe, title_col):
     return dataframe.groupby('Year Published')[title_col].agg(lambda x: '<br>'.join(x)).reset_index(name='All Titles')
 
 
 # Aggregate all titles
-all_titles = aggregate_all_titles(books_df, 'Title')
+all_titles_pub = aggregate_all_titles_pub(books_df, 'Title')
+
+def aggregate_all_titles_fin(dataframe, title_col):
+    return dataframe.groupby(dataframe['Year Finished'])[title_col].agg(lambda x: '<br>'.join(x)).reset_index(name='All Titles')
+
+
+
+# Aggregate all titles
+all_titles_fin = aggregate_all_titles_fin(books_df, 'Title')
 
 
 
@@ -171,29 +166,51 @@ all_titles = aggregate_all_titles(books_df, 'Title')
 books_publication_year = books_df.groupby('Year Published')['Book Id'].count().reset_index()
 books_publication_year.columns = ['Year Published','Count']
 
-# Create a new DataFrame for each title
-df_list = []
+# Create a new DataFrame for each title for 'Year Published'
+df_list_pub = []
 for index, row in books_publication_year.iterrows():
     year = row['Year Published']
-    titles = all_titles[all_titles['Year Published'] == year]['All Titles'].iloc[0]
+    titles = all_titles_pub[all_titles_pub['Year Published'] == year]['All Titles'].iloc[0]
     count = len(titles) if isinstance(titles, list) else 1
-    df_list.append(pd.DataFrame({'Year Published': [year] * count, 'Title': titles}))
+    df_list_pub.append(pd.DataFrame({'Year Published': [year] * count, 'Title': titles}))
 
-# Concatenate the DataFrames
-result_df = pd.concat(df_list, ignore_index=True)
+# Concatenate the DataFrames for 'Year Published'
+result_df_pub = pd.concat(df_list_pub, ignore_index=True)
 
-# Reset index before merging
-books_publication_year = books_publication_year.reset_index(drop=True)
-all_titles = all_titles.reset_index(drop=True)
+# Merge with all_titles_pub using the index
+books_publication_year = pd.merge(books_publication_year, all_titles_pub, how='left', left_index=True, right_index=True)
 
-# Merge with all_titles using the index
-books_publication_year = pd.merge(books_publication_year, all_titles, how='left', left_index=True, right_index=True)
-
-# Drop rows with NaN values in the "All Titles" column
+# Drop rows with NaN values in the "All Titles" column for 'Year Published'
 books_publication_year = books_publication_year.dropna(subset=['All Titles'])
 
-# Rename columns to avoid conflicts
+# Rename columns to avoid conflicts for 'Year Published'
 books_publication_year = books_publication_year.rename(columns={'Year Published_x': 'Year Published'})
+
+####
+
+books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
+books_per_year.columns = ['Year Finished','Count']
+
+
+# Create a new DataFrame for each title for 'Year Finished'
+df_list_fin = []
+for index, row in books_per_year.iterrows():
+    year = row['Year Finished']
+    titles = all_titles_fin[all_titles_fin['Year Finished'] == year]['All Titles'].iloc[0]
+    count = len(titles) if isinstance(titles, list) else 1
+    df_list_fin.append(pd.DataFrame({'Year Finished': [year] * count, 'Title': titles}))
+
+# Concatenate the DataFrames for 'Year Finished'
+result_df_fin = pd.concat(df_list_fin, ignore_index=True)
+
+# Merge with all_titles_fin using the index
+books_per_year = pd.merge(books_per_year, all_titles_fin, how='left', left_index=True, right_index=True)
+
+# Drop rows with NaN values in the "All Titles" column for 'Year Finished'
+books_per_year = books_per_year.dropna(subset=['All Titles'])
+
+# Rename columns to avoid conflicts for 'Year Finished'
+books_per_year = books_per_year.rename(columns={'Year Finished_x': 'Year Finished'})
 
 fig_year_published = px.bar(
                             books_publication_year,
@@ -206,8 +223,59 @@ fig_year_published = px.bar(
 fig_year_published.update_xaxes(range=[1980,2024])
 fig_year_published.update_layout(yaxis_title='',showlegend=False,coloraxis_showscale=False)
 # Remove color bar legend
-fig_year_finished.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext=[]))
+fig_year_published.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext=[]))
 
+#####
+#####
+
+books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
+books_per_year.columns = ['Year Finished','Count']
+
+# Create a new DataFrame for each title
+
+df_list = []
+for index, row in books_per_year.iterrows():
+    year = row['Year Finished']
+    titles = all_titles_fin[all_titles_fin['Year Finished'] == year]['All Titles'].iloc[0]
+    count = len(titles) if isinstance(titles, list) else 1
+    df_list.append(pd.DataFrame({'Year Finished': [year] * count, 'Title': titles}))
+
+# Concatenate the DataFrames
+result_df = pd.concat(df_list, ignore_index=True)
+
+# Reset index before merging
+books_per_year = books_per_year.reset_index(drop=True)
+all_titles = all_titles_fin.reset_index(drop=True)
+
+# Merge with all_titles using the index
+books_per_year = pd.merge(books_per_year, all_titles_fin, how='left', left_index=True, right_index=True)
+
+# Drop rows with NaN values in the "All Titles" column
+books_per_year = books_per_year.dropna(subset=['All Titles'])
+
+# Rename columns to avoid conflicts
+books_per_year = books_per_year.rename(columns={'Year Finished_x': 'Year Finished'})
+
+
+
+
+
+#####
+
+
+
+fig_year_finished = px.bar(books_per_year, 
+                           x='Year Finished', 
+                           y='Count',
+                           color='Year Finished',
+                           hover_data=['All Titles'],
+                           color_discrete_map=color_scale_for_bars)
+
+
+# Explicitly set the x-axis type to 'category'; get rid of y label & legend
+fig_year_finished.update_layout(xaxis_type='category', yaxis_title='',showlegend=False,coloraxis_showscale=False)
+# Remove color bar legend
+fig_year_finished.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext=[]))
 
 
 
