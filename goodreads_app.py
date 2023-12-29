@@ -9,31 +9,27 @@ from wordcloud import STOPWORDS
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
-# Download NLTK stopwords (if not already downloaded)
+################################## stopwords for word cloud ##########################################
 import nltk
 nltk.download('stopwords')
 
-# Set the overall theme or style
+################################## overall set up ##########################################
 st.set_page_config(
     page_title='Your Goodreads Analysis',
     page_icon='📚',
     layout='wide',
     initial_sidebar_state='collapsed'
 )
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
-#### Color theming
+################################## color theming ###########################################
 
 color_scale_for_bars = 'Blues'
 color_scale_for_wordcloud = 'Blues'
 # Define your color for the histogram
 histogram_color = '#94D7F2' 
 
-
-
-
-st.set_option('deprecation.showPyplotGlobalUse', False)
-
-
+################################## set animation ###########################################
 def load_lottieurl(url:str):
     r = requests.get(url)
     if r.status_code != 200:
@@ -44,8 +40,7 @@ file_url = 'https://lottie.host/d444a43b-2c5f-4709-b100-8708bc6bb344/FDGGNBK4tN.
 lottie_book = load_lottieurl(file_url)
 st_lottie(lottie_book, speed=1, height=200, key='initial')
 
-
-##### Banner
+#################################### set banner ############################################
 # Set the background color and height of the banner
 banner_style = """
     background-color: #94D7F2;  /* You can use any valid color representation */
@@ -61,12 +56,13 @@ st.write(
     unsafe_allow_html=True,
 )
 
-######
+########################### sub text ##########################################################
 
 st.subheader('Web app by [Jisell Howe](https://www.jisellhowe.com)')
 """
 This app analyzes (but does not store) the books you've read using Goodreads. Upload your data to see your own insights.
 """
+########################### establish columns ##########################################################
 
 # Assuming half the screen width for each column
 left_col, right_col = st.columns(2)
@@ -74,7 +70,7 @@ left_col, right_col = st.columns(2)
 # File uploader in the second half
 goodreads_file = right_col.file_uploader('## Please Import Your Goodreads Data')
 
-# The rest of the code
+
 if goodreads_file is None:
     books_df = pd.read_csv('goodreads_library_export_JH.csv')
     left_col.write("### Analyzing Jisell's Goodreads History")
@@ -82,7 +78,7 @@ else:
     books_df = pd.read_csv(goodreads_file)
     left_col.write('### Analyzing your Goodreads History')
 
-#### pre-processing on titles
+########################### ore-processing on titles for word cloud ##########################################################
     
 # Combine NLTK and WordCloud stopwords
 stop_words = set(stopwords.words('english') + list(STOPWORDS))
@@ -107,13 +103,8 @@ text = ' '.join(books_df['cleaned_titles'])
 # Generate word cloud
 wordcloud = WordCloud(width=700, height=1067, background_color='white',colormap=color_scale_for_wordcloud).generate(text)
 
-#####
 
-print(books_df.columns)
-
-
-
-#####
+############################ initial column set up in dataframe ####################################################################
 
 books_df['days_to_finish'] = (pd.to_datetime(
     books_df['Date Read']) - pd.to_datetime(books_df['Date Added'])).dt.days
@@ -128,7 +119,7 @@ books_df['Year Finished'] = pd.to_datetime(books_df['Date Read']).dt.year
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
 books_per_year.columns = ['Year Finished', 'Count']
 
-
+########################### histogram - books read - days to finish ##########################################################
 fig_days_finished = px.histogram(books_finished_filtered, 
                                  x='days_to_finish',
                                  labels={'days_to_finish':'days'},
@@ -136,29 +127,20 @@ fig_days_finished = px.histogram(books_finished_filtered,
 fig_days_finished.update_layout(yaxis_title='',showlegend=False)
 
 
-#####
+########################### histogram - books read - number of pages ##########################################################
 
-fig_num_pages = px.histogram(books_df,
+fig_num_pages = px.histogram(books_finished_filtered,
                              x='Number of Pages',
                              color_discrete_sequence=[histogram_color])
 fig_num_pages.update_layout(yaxis_title='',showlegend=False)
 
-
+########################### gather titles for hover data - published ##########################################################
 def aggregate_all_titles_pub(dataframe, title_col):
     return dataframe.groupby('Year Published')[title_col].agg(lambda x: '<br>'.join(x)).reset_index(name='All Titles')
 
 
 # Aggregate all titles
 all_titles_pub = aggregate_all_titles_pub(books_df, 'Title')
-
-def aggregate_all_titles_fin(dataframe, title_col):
-    return dataframe.groupby(dataframe['Year Finished'])[title_col].agg(lambda x: '<br>'.join(x)).reset_index(name='All Titles')
-
-
-
-# Aggregate all titles
-all_titles_fin = aggregate_all_titles_fin(books_df, 'Title')
-
 
 
 #####
@@ -188,6 +170,36 @@ books_publication_year = books_publication_year.rename(columns={'Year Published_
 
 ####
 
+########################### bar chart - published ##########################################################
+
+fig_year_published = px.bar(
+                            books_publication_year,
+                            x='Year Published',
+                            y='Count',
+                            color='Count',
+                            color_discrete_map=color_scale_for_bars,
+                            hover_data=['All Titles']
+                            )
+fig_year_published.update_xaxes(range=[1980,2024])
+fig_year_published.update_layout(yaxis_title='',showlegend=False,coloraxis_showscale=False)
+# Remove color bar legend
+fig_year_published.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext=[]))
+
+#####
+#####
+
+########################### gather titles for hover data - finished ##########################################################
+
+def aggregate_all_titles_fin(dataframe, title_col):
+    return dataframe.groupby(dataframe['Year Finished'])[title_col].agg(lambda x: '<br>'.join(x)).reset_index(name='All Titles')
+
+
+
+# Aggregate all titles
+all_titles_fin = aggregate_all_titles_fin(books_df, 'Title')
+
+
+
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
 books_per_year.columns = ['Year Finished','Count']
 
@@ -212,21 +224,6 @@ books_per_year = books_per_year.dropna(subset=['All Titles'])
 # Rename columns to avoid conflicts for 'Year Finished'
 books_per_year = books_per_year.rename(columns={'Year Finished_x': 'Year Finished'})
 
-fig_year_published = px.bar(
-                            books_publication_year,
-                            x='Year Published',
-                            y='Count',
-                            color='Count',
-                            color_discrete_map=color_scale_for_bars,
-                            hover_data=['All Titles']
-                            )
-fig_year_published.update_xaxes(range=[1980,2024])
-fig_year_published.update_layout(yaxis_title='',showlegend=False,coloraxis_showscale=False)
-# Remove color bar legend
-fig_year_published.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext=[]))
-
-#####
-#####
 
 books_per_year = books_df.groupby('Year Finished')['Book Id'].count().reset_index()
 books_per_year.columns = ['Year Finished','Count']
@@ -257,12 +254,7 @@ books_per_year = books_per_year.dropna(subset=['All Titles'])
 books_per_year = books_per_year.rename(columns={'Year Finished_x': 'Year Finished'})
 
 
-
-
-
-#####
-
-
+########################### bar chart - published ##########################################################
 
 fig_year_finished = px.bar(books_per_year, 
                            x='Year Finished', 
@@ -278,10 +270,7 @@ fig_year_finished.update_layout(xaxis_type='category', yaxis_title='',showlegend
 fig_year_finished.update_coloraxes(colorbar=dict(title='', tickvals=[], ticktext=[]))
 
 
-
-
-
-####
+########################### histograms - my rating and average rating ##########################################################
 
 books_rated = books_df[books_df['My Rating']!= 0]
 fig_my_rating = px.histogram(books_rated, 
@@ -301,7 +290,8 @@ if avg_difference >= 0:
 else:
     sign = 'lower'
 
-####
+########################### assembly of word cloud & all charts ##########################################################
+    
 st.write("---")
 row1_col1, row1_col2 = st.columns(2)
 row2_col1, row2_col2 = st.columns(2)
